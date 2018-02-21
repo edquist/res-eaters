@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-use Time::HiRes qw(ualarm usleep);
+use Time::HiRes qw(ualarm); # usleep);
 
 my $work_px  = shift;
 my $sleep_px = 100 - $work_px;
@@ -8,6 +8,8 @@ my $us_mul   = 500;
 my $work_us  = $us_mul * $work_px;
 my $sleep_us = $us_mul * $sleep_px;
 my $x = 1;
+
+sub usleep { select undef, undef, undef, $_[0] / 1000000.0 }
 
 $SIG{ALRM} = sub { usleep $sleep_us; ualarm $work_us; };
 ualarm $work_us;
